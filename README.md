@@ -6,4 +6,4 @@ Laadun- ja turvallisuudenhallintaa varten rakennettu raportointisovellus kuvitte
 Sovelluksen ominaisuuksia: 
   - Pääkäyttäjä voi luoda tai poistaa käyttäjiä sekä tehdä toisista käyttäjistä pääkäyttäjiä
   - Kirjautuessaan ensimmäistä kertaa käyttäjän on syötettävä uusi salasana. Salasanan pystyy uusimaan halutessaan tämän jälkeen.
-  - 
+  - Pääkäyttäjä näkee listauksen kaikista syötetyistä raporteista ja voi suodattaa raportteja niiden tietojen perusteella
