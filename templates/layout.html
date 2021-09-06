@@ -8,9 +8,22 @@
 </head>
 <body>
     <h1>Reporting app</h1>
+    {% if session.username %}
+    <p>Signed in as {{session.username}}</p>
+    <a href="/logout">Sign out</a>
     <a href="/">Front page</a>
     <a href="/new">New report</a>
     <a href="/result">Search reports</a>
     {% block content %}{% endblock %}
+    {% else %}
+    <form action="/login" method="POST">
+        <h1>Sign in</h1>
+        <input type="text" name="username" placeholder="Insert username"><br>
+        <input type="password" name="password" placeholder="Insert password"><br>
+        <input type="submit" value="Sign in">
+    </form>
+    <p>Or</p>
+    <a href="/user">Create new user</a>
+    {% endif %}
 </body>
 </html>
