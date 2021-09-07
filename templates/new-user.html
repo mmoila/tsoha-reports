@@ -7,12 +7,27 @@
     <title>Reporting app {% block title %}{% endblock %}</title>
 </head>
 <body>
-    <h1>New user</h1>
-    <form action="/user" method="POST">
+    {% if session.no_admins %}
+    <h1>First create admin user</h1>
+    <form action="/user-init" method="POST">
         <input type="text" name="username" placeholder="Select username"><br>
         <input type="password" name="password" placeholder="Select password"><br>
         <br>
         <input type="submit" value="Create user">
     </form>
+    {% else %}
+    {% extends "layout.html" %}
+    {%block content%}
+    <h1>New user</h1>
+    <form action="/user" method="POST">
+        <input type="text" name="username" placeholder="Select username"><br>
+        <input type="password" name="password" placeholder="Select password"><br>
+        <input type="checkbox" name="admin" value="1">
+        <label for="admin">Administrator</label><br>
+        <br>
+        <input type="submit" value="Create user">
+    </form>
+    {% endblock %}
+    {% endif %}
 </body>
 </html>
