@@ -1,9 +1,9 @@
 from werkzeug.utils import redirect
 from app import app
 from flask import render_template, request, session
-from reports import Report
 from db import db
 from users import check_login, create_user, is_admin, no_admins
+import reports
 
 @app.route("/")
 def index():
@@ -48,8 +48,7 @@ def send():
     if len(description) > 1000:
         return render_template("error.html", error="Max description length is 1000 characters")
     location_id = request.form["location"]
-    report = Report(title, description, location_id)
-    report.send()
+    reports.send(title, description, location_id)
     return redirect("/")
 
 @app.route("/result")
