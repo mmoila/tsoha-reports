@@ -23,6 +23,7 @@
         <h1>Sign in</h1>
         <input type="text" name="username" placeholder="Insert username"><br>
         <input type="password" name="password" placeholder="Insert password"><br>
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <input type="submit" value="Sign in">
     </form>
     {% if session.no_admins %}

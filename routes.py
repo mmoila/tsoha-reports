@@ -1,9 +1,10 @@
 from werkzeug.utils import redirect
 from app import app
-from flask import render_template, request, session
+from flask import render_template, request, session, abort
 from db import db
 from users import check_login, create_user, is_admin, no_admins
 import reports
+import secrets
 
 @app.route("/")
 def index():
@@ -15,6 +16,7 @@ def index():
 
 @app.route("/login",methods=["POST"])
 def login():
+    session["csrf_token"] = secrets.token_hex(16)
     username = request.form["username"]
     password = request.form["password"]
     if check_login(username, password):
@@ -41,6 +43,8 @@ def new():
 
 @app.route("/send", methods=["POST"])
 def send():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     title = request.form["title"]
     if len(title) > 50:
         return render_template("error.html", error = "Title is too long!")
@@ -54,13 +58,14 @@ def send():
 @app.route("/result")
 def result():
     if session["admin"]:
-        result = db.session.execute("SELECT * FROM reports")
-        reports = result.fetchall()
-        return render_template("result.html", reports=reports)
+        result = reports.get_all()
+        return render_template("result.html", reports=result)
     return redirect("/")
 
 @app.route("/user", methods=["GET", "POST"])
 def user():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if session["admin"]:
         if request.method == "GET":
             return render_template("new-user.html")
@@ -79,6 +84,8 @@ def user():
 
 @app.route("/user-init", methods=["GET", "POST"])
 def user_init():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if request.method == "GET":
             return render_template("new-user.html")
     if request.method == "POST":
