@@ -42,7 +42,11 @@ def new():
 @app.route("/send", methods=["POST"])
 def send():
     title = request.form["title"]
+    if len(title) > 50:
+        return render_template("error.html", error = "Title is too long!")
     description = request.form["description"]
+    if len(description) > 1000:
+        return render_template("error.html", error="Max description length is 1000 characters")
     location_id = request.form["location"]
     report = Report(title, description, location_id)
     report.send()
@@ -64,6 +68,8 @@ def user():
         if request.method == "POST":
             username = request.form["username"]
             password = request.form["password"]
+            if len(username) > 30 or len(password) > 30:
+                return render_template("error.html", error="Username or password is too long!")
             try:
                 admin = request.form["admin"]
                 create_user(username, password, admin)
@@ -79,6 +85,8 @@ def user_init():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        if len(username) > 30 or len(password) > 30:
+            return render_template("error.html", error="Username or password is too long!")
         admin = "1"
         create_user(username, password, admin)
         del session["no_admins"]
