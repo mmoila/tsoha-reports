@@ -3,11 +3,14 @@ from app import app
 from flask import render_template, request, session
 from reports import Report
 from db import db
-from users import check_login, create_user
+from users import check_login, create_user, is_admin, no_admins
 
 @app.route("/")
 def index():
     title = "test"
+    if no_admins():
+        session["no_admins"] = True
+        return render_template("new-user.html")
     return render_template("index.html", title=title)
 
 @app.route("/login",methods=["POST"])
@@ -16,13 +19,17 @@ def login():
     password = request.form["password"]
     if check_login(username, password):
         session["username"] = username
+        session["admin"] = False
+        if is_admin():
+            session["admin"] = True
         return redirect("/")
     else:
         return redirect("/")
 
 @app.route("/logout")
 def logout():
-    del session["username"]
+    for key in list(session.keys()):
+        session.pop(key)
     return redirect("/")
 
 @app.route("/new")
@@ -43,16 +50,36 @@ def send():
 
 @app.route("/result")
 def result():
-    result = db.session.execute("SELECT * FROM reports")
-    reports = result.fetchall()
-    return render_template("result.html", reports=reports)
+    if session["admin"]:
+        result = db.session.execute("SELECT * FROM reports")
+        reports = result.fetchall()
+        return render_template("result.html", reports=reports)
+    return redirect("/")
 
 @app.route("/user", methods=["GET", "POST"])
 def user():
+    if session["admin"]:
+        if request.method == "GET":
+            return render_template("new-user.html")
+        if request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
+            try:
+                admin = request.form["admin"]
+                create_user(username, password, admin)
+            except:
+                create_user(username, password)
+            return redirect("/")
+    return redirect("/")
+
+@app.route("/user-init", methods=["GET", "POST"])
+def user_init():
     if request.method == "GET":
-        return render_template("new-user.html")
+            return render_template("new-user.html")
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        create_user(username, password)
+        admin = "1"
+        create_user(username, password, admin)
+        del session["no_admins"]
         return redirect("/")

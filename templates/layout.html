@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,10 @@
     <a href="/logout">Sign out</a>
     <a href="/">Front page</a>
     <a href="/new">New report</a>
+    {% if session.admin %}
     <a href="/result">Search reports</a>
+    <a href="/user">Create new user</a>
+    {% endif %}
     {% block content %}{% endblock %}
     {% else %}
     <form action="/login" method="POST">
@@ -22,8 +25,9 @@
         <input type="password" name="password" placeholder="Insert password"><br>
         <input type="submit" value="Sign in">
     </form>
-    <p>Or</p>
-    <a href="/user">Create new user</a>
+    {% if session.no_admins %}
+    <a href="/user-init">Create first admin user</a>
+    {% endif %}
     {% endif %}
 </body>
 </html>
