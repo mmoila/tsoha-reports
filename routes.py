@@ -64,12 +64,12 @@ def result():
 
 @app.route("/user", methods=["GET", "POST"])
 def user():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
     if session["admin"]:
         if request.method == "GET":
             return render_template("new-user.html")
         if request.method == "POST":
+            if session["csrf_token"] != request.form["csrf_token"]:
+                return abort(403)
             username = request.form["username"]
             password = request.form["password"]
             if len(username) > 30 or len(password) > 30:
