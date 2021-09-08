@@ -4,23 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        th, td {
+          padding: 5px;
+        }
+        th {
+          text-align: left;
+        }
+    </style>
     <title>Reporting app {% block title %}{% endblock %}</title>
     {% extends "layout.html" %}
 </head>
 <body>
-    {%block content%}
+    {% block content %}
     <h1>Report summary</h1>
     <table>
         <tr>
             <th>Report id</th>
+            <th>Date</th>
             <th>Title</th>
             <th>Description</th>
         </tr>
         {% for report in reports %}
         <tr>
-            <td>{{report.id}}</td>
-            <td>{{report.title}}</td>
-            <td>{{report.description}}</td>
+            <td>{{ report.id }}</td>
+            <td>{{ report.date }}</td>
+            <td>{{ report.title }}</td>
+            <td>{{ report.description }}</td>
         </tr>
         {% endfor %}
     </table>
