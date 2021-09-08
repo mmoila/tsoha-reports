@@ -11,6 +11,7 @@
     {% block content %}
     <form action="/send" method="post">
         <h1>New report</h1>
+        <input type="date" name="date"><br>
         <input type="text" name="title" placeholder="Report title here"><br>
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <select name="location">

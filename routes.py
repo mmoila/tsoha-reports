@@ -45,6 +45,7 @@ def new():
 def send():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
+    date = request.form["date"]
     title = request.form["title"]
     if len(title) > 50:
         return render_template("error.html", error = "Title is too long!")
@@ -52,7 +53,7 @@ def send():
     if len(description) > 1000:
         return render_template("error.html", error="Max description length is 1000 characters")
     location_id = request.form["location"]
-    reports.send(title, description, location_id)
+    reports.send(date, title, description, location_id)
     return redirect("/")
 
 @app.route("/result")
