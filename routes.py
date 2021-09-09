@@ -98,3 +98,10 @@ def user_init():
         create_user(username, password, admin)
         del session["no_admins"]
         return redirect("/")
+
+@app.route("/report/<int:id>")
+def report(id):
+    if session["admin"]:
+        report = reports.get_report(id)
+        return render_template("report.html", report=report)
+    return redirect("/")

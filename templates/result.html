@@ -17,9 +17,9 @@
         }
     </style>
     <title>Reporting app {% block title %}{% endblock %}</title>
-    {% extends "layout.html" %}
 </head>
 <body>
+    {% extends "layout.html" %}
     {% block content %}
     <h1>Report summary</h1>
     <table>
@@ -27,14 +27,14 @@
             <th>Report id</th>
             <th>Date</th>
             <th>Title</th>
-            <th>Description</th>
+            <th>Location</th>
         </tr>
         {% for report in reports %}
         <tr>
-            <td>{{ report.id }}</td>
+            <td><a href="/report/{{ report.id }}" target="_blank">{{ report.id }}</a></td>
             <td>{{ report.date }}</td>
             <td>{{ report.title }}</td>
-            <td>{{ report.description }}</td>
+            <td>{{ report.icao_ident }}</td>
         </tr>
         {% endfor %}
     </table>
