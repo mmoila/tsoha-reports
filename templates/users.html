@@ -36,16 +36,18 @@
             <th>User id</th>
             <th>Username</th>
             <th>Admin</th>
+            <th>Active</th>
         </tr>
         {% for user in user_list %}
         <tr>
             <td>{{ user.id }}</td>
             <td>{{ user.username }}</td>
             <td>{{ user.is_admin }}</td>
+            <td>{{ user.is_active }}</td>
             <td>
-              <form action="user/delete/{{ user.id }}" method="POST" onsubmit="confirm(this)">
+              <form action="/change-state/{{ user.id }}" method="POST" onsubmit="confirm(this)">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                <input type="submit" value="Delete user">
+                <input type="submit" value="Change user state">
               </form>
             </td>
         </tr>

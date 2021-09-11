@@ -9,7 +9,7 @@ import secrets
 @app.route("/")
 def index():
     title = "test"
-    if users.no_admins():
+    if users.count_admins() == 0:
         session["no_admins"] = True
         return render_template("new-user.html")
     return render_template("index.html", title=title)
@@ -22,7 +22,7 @@ def login():
     if users.check_login(username, password):
         session["username"] = username
         session["admin"] = False
-        if users.is_admin():
+        if users.is_admin(session["user_id"]):
             session["admin"] = True
         return redirect("/")
     else:
@@ -120,4 +120,14 @@ def user_search():
     if session["admin"]:
         user_list = users.get_all()
         return render_template("users.html", user_list=user_list)
+    return redirect("/")
+
+@app.route("/change-state/<int:id>", methods=["POST"])
+def change_state(id):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    if session["admin"]:
+        if users.change_state(id):
+            return redirect("/user/search")
+        return render_template("error.html", error="Can't deactivate last user/admin...")
     return redirect("/")
