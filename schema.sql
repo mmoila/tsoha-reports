@@ -2,7 +2,8 @@ CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
 	username TEXT UNIQUE,
 	password TEXT,
-	is_admin BOOLEAN
+	is_admin BOOLEAN,
+	is_active BOOLEAN
 );
 
 
@@ -20,7 +21,8 @@ CREATE TABLE reports (
 	title TEXT,
 	description TEXT,
 	user_id INTEGER REFERENCES users,
-	location_id INTEGER REFERENCES locations
+	location_id INTEGER REFERENCES locations,
+	created_at TIMESTAMP
 );
 
 INSERT INTO locations (ICAO_ident, IATA_ident, location_name)
