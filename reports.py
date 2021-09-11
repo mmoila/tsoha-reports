@@ -20,4 +20,7 @@ def get_report(id):
     result = db.session.execute(sql, {"id":id})
     return result.fetchone()
     
-    
+def delete(id):
+    sql = "DELETE FROM reports WHERE id=:id"
+    db.session.execute(sql, {"id":id})
+    db.session.commit()

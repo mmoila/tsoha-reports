@@ -105,3 +105,14 @@ def report(id):
         report = reports.get_report(id)
         return render_template("report.html", report=report)
     return redirect("/")
+
+@app.route("/report/delete/<int:id>", methods=["POST"])
+def delete(id):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    print("debug")
+    if session["admin"]:
+        print("debug2")
+        reports.delete(id)
+        return redirect("/result")
+    return redirect("/")
