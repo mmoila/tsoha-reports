@@ -37,3 +37,8 @@ def no_admins():
     if not admin:
         return True
     return False
+
+def get_all():
+    sql = "SELECT id, username, is_admin FROM USERS"
+    result = db.session.execute(sql)
+    return result.fetchall()

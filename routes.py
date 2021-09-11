@@ -2,14 +2,14 @@ from werkzeug.utils import redirect
 from app import app
 from flask import render_template, request, session, abort
 from db import db
-from users import check_login, create_user, is_admin, no_admins
+import users
 import reports
 import secrets
 
 @app.route("/")
 def index():
     title = "test"
-    if no_admins():
+    if users.no_admins():
         session["no_admins"] = True
         return render_template("new-user.html")
     return render_template("index.html", title=title)
@@ -19,10 +19,10 @@ def login():
     session["csrf_token"] = secrets.token_hex(16)
     username = request.form["username"]
     password = request.form["password"]
-    if check_login(username, password):
+    if users.check_login(username, password):
         session["username"] = username
         session["admin"] = False
-        if is_admin():
+        if users.is_admin():
             session["admin"] = True
         return redirect("/")
     else:
@@ -77,9 +77,9 @@ def user():
                 return render_template("error.html", error="Username or password is too long!")
             try:
                 admin = request.form["admin"]
-                create_user(username, password, admin)
+                users.create_user(username, password, admin)
             except:
-                create_user(username, password)
+                users.create_user(username, password)
             return redirect("/")
     return redirect("/")
 
@@ -95,7 +95,7 @@ def user_init():
         if len(username) > 30 or len(password) > 30:
             return render_template("error.html", error="Username or password is too long!")
         admin = "1"
-        create_user(username, password, admin)
+        users.create_user(username, password, admin)
         del session["no_admins"]
         return redirect("/")
 
@@ -110,9 +110,14 @@ def report(id):
 def delete(id):
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
-    print("debug")
     if session["admin"]:
-        print("debug2")
         reports.delete(id)
         return redirect("/result")
+    return redirect("/")
+
+@app.route("/user/search")
+def user_search():
+    if session["admin"]:
+        user_list = users.get_all()
+        return render_template("users.html", user_list=user_list)
     return redirect("/")
