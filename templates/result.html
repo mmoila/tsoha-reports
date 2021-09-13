@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/styles.css">
     <title>Reporting app {% block title %}{% endblock %}</title>
+    <script src="/static/scripts.js"></script>
 </head>
 <body>
     {% extends "layout.html" %}
@@ -25,7 +26,7 @@
             <td>{{ report.title }}</td>
             <td>{{ report.icao_ident }}</td>
             <td>
-              <form action="report/delete/{{ report.id }}" method="POST" onsubmit="confirm(this)">
+              <form action="report/delete/{{ report.id }}" method="POST" onsubmit="return confirmation(this)">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <input type="submit" value="Delete report">
               </form>
