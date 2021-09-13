@@ -6,15 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/styles.css">
     <title>Reporting app {% block title %}{% endblock %}</title>
-    <script>
-      function confirm(form) {
-        let yes = confirm("Are you sure you want to delete this report?");
-        if (yes == true) {
-          return true;
-        }
-        return false;
-      }
-    </script>
 </head>
 <body>
     {% extends "layout.html" %}
