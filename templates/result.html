@@ -26,7 +26,8 @@
             <td>{{ report.title }}</td>
             <td>{{ report.icao_ident }}</td>
             <td>
-              <form action="report/delete/{{ report.id }}" method="POST" onsubmit="return confirmation(this)">
+              <form action="report/delete/{{ report.id }}" 
+              method="POST" onsubmit="return confirmation(this, 'Confirm delete this report?')">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <input type="submit" value="Delete report">
               </form>

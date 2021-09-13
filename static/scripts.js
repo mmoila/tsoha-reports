@@ -1,6 +1,6 @@
 
-function confirmation(form) {
-    let yes = confirm("Are you sure you want to delete this report?");
+function confirmation(form, message) {
+    let yes = confirm(message);
     if (yes == true) {
         return true;
     }
