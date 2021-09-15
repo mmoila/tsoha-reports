@@ -1,10 +1,30 @@
+body {
+  background-color: rgb(241, 231, 225);
+}
+
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
-  }
-  th, td {
+}
+
+th, td {
     padding: 5px;
-  }
-  th {
+}
+
+th {
     text-align: left;
-  }
+}
+
+.user-status {
+    color: darkorange;
+    border-style: solid;
+    border-width: 1px;
+    border-color: darkorange;
+    padding: 2px 4px;
+}
+
+.navbar {
+  margin: 0 -15px 0 -15px;
+}
+
+  
