@@ -9,8 +9,8 @@
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <div class="container-fluid">
-    {% if session.username %}
+  {% if session.username %}
+    <div class="container-fluid">
       <nav class="navbar navbar-expand-sm navbar-light navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Reporting app</a>
         <div class="navbar-nav">
@@ -27,21 +27,37 @@
         </div>
       </nav>
       {% block content %}{% endblock %}
-    {% else %}
-      <div class="row">
-        <div class="col">
+    </div>
+  {% else %}
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-sm navbar-light navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Reporting app</a>
+      </nav>
+    </div>
+    <div id="login" class="container">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-6">
+          <h1 id="login-text">Sign in</h1>
           <form action="/login" method="POST">
-            <h1>Sign in</h1>
-            <input type="text" name="username" placeholder="Insert username"><br>
-            <input type="password" name="password" placeholder="Insert password"><br>
-            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-            <input type="submit" value="Sign in">
+            <div class="form-group">
+              <label for="inputUsername">Username</label>
+              <input type="text" class="form-control" name="username" id=inputUsername placeholder="Insert username">
+            </div>
+            <div class="form-group">
+              <label for="inputPassword">Password</label>
+              <input type="password" class="form-control" name="password" id="inputPassword" placeholder="Insert password">
+              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary" type="submit">Sign in</button>
+            </div>
+            {% if session.no_admins %}
+              <a href="/user-init">Create first admin user</a>
+            {% endif %}
           </form>
         </div>
       </div>
-      {% if session.no_admins %}
-        <a href="/user-init">Create first admin user</a>
-      {% endif %}
+    </div>
     {% endif %}
   </div>
 </body>
