@@ -42,6 +42,14 @@ th {
 }
 
 .btn {
+  color: whitesmoke;
   background-color: grey;
   border-color: darkorange;
+}
+
+.btn:hover, .btn:focus, .btn:active {
+  background-color: darkorange;
+  border-color: darkorange;
+  outline: none;
+  box-shadow: none;
 }
