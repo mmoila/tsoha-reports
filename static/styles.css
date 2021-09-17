@@ -1,3 +1,7 @@
+body {
+  font-family: 'Yantramanav', sans-serif;
+}
+
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
@@ -23,11 +27,8 @@ th {
   margin: 0 -15px 0 -15px;
 }
 
-.container-fluid {
-  height: 25vh;
-}
-
 #login {
+  margin-top: 15vh;
   border-style: solid;
   border-width: 1px;
   border-color: grey;
@@ -51,4 +52,9 @@ th {
   border-color: darkorange;
   outline: none;
   box-shadow: none;
+}
+
+.main-content {
+  max-width: 80em;
+  margin-top: 15vh;
 }

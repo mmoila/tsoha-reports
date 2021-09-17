@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporting app {% block title %}{% endblock %}</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reporting app {% block title %}{% endblock %}</title>
 </head>
 <body>
-    {% if session.no_admins %}
-    <h1>First create admin user</h1>
-    <form action="/user-init" method="POST">
+  {% if session.no_admins %}
+    <div class="col-3">
+      <h1>First create admin user</h1>
+    </div>
+    <div class="col-8">
+      <form action="/user-init" method="POST">
         <input type="text" name="username" placeholder="Select username"><br>
         <input type="password" name="password" placeholder="Select password"><br>
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <br>
         <input type="submit" value="Create user">
-    </form>
-    {% else %}
+      </form>
+    </div>
+  {% else %}
     {% extends "layout.html" %}
-    {%block content%}
-    <h1>New user</h1>
-    <form action="/user" method="POST">
+    {% block content %}
+      <div class="col-3">
+        <h1>New user</h1>
+      </div>
+      <div class="col-8">
+      <form action="/user" method="POST">
         <input type="text" name="username" placeholder="Select username"><br>
         <input type="password" name="password" placeholder="Select password"><br>
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
@@ -28,8 +35,9 @@
         <label for="admin">Administrator</label><br>
         <br>
         <input type="submit" value="Create user">
-    </form>
+      </form>
+    </div>
     {% endblock %}
-    {% endif %}
+  {% endif %}
 </body>
 </html>
