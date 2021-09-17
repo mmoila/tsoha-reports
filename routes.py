@@ -85,11 +85,11 @@ def user():
 
 @app.route("/user-init", methods=["GET", "POST"])
 def user_init():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
     if request.method == "GET":
             return render_template("new-user.html")
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         username = request.form["username"]
         password = request.form["password"]
         if len(username) > 30 or len(password) > 30:
@@ -131,3 +131,20 @@ def change_state(id):
             return redirect("/user/search")
         return render_template("error.html", error="Can't deactivate last user/admin...")
     return redirect("/")
+
+@app.route("/change-password", methods=["GET", "POST"])
+def change_password():
+    if request.method == "GET":
+        return render_template("change-password.html")
+    if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+        password = request.form["password"]
+        c_password = request.form["cPassword"]
+        if password == c_password:
+            users.change_password(session["user_id"], password)
+            return redirect("/")
+        else:
+            return render_template("error.html", error="Passwords didn't match")
+
+        

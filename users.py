@@ -62,4 +62,9 @@ def change_state(id):
     else:
         return False
     
+def change_password(id, password):
+    hash_value = generate_password_hash(password)
+    sql = "UPDATE users SET password=:password WHERE id=:id"
+    db.session.execute(sql, {"id":id, "password":hash_value})
+    db.session.commit()
     
