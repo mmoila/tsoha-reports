@@ -11,34 +11,45 @@
 <body>
   {% extends "layout.html" %}
   {% block content %}
-    <div class="col-3">
-      <h1>Report summary</h1>
+    <div class="row">
+      <div class="col-3">
+        <h1>Report summary</h1>
+      </div>
     </div>
-    <div class="col-8">
-      <table>
-        <tr>
-          <th>Report id</th>
-          <th>Date</th>
-          <th>Title</th>
-          <th>Location</th>
-        </tr>
-        {% for report in reports %}
-        <tr>
-          <td><a href="/report/{{ report.id }}" target="_blank">{{ report.id }}</a></td>
-          <td>{{ report.date }}</td>
-          <td>{{ report.title }}</td>
-          <td>{{ report.icao_ident }}</td>
-          <td>
-          <form action="report/delete/{{ report.id }}" 
-          method="POST" onsubmit="return confirmation(this, 'Confirm delete this report?')">
-            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-            <input type="submit" value="Delete report">
-          </form>
-          </td>
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
+    <div class="row">
+      <div class="col">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Report id</th>
+                <th scope="col">Date</th>
+                <th scope="col">Title</th>
+                <th scope="col">Location</th>
+                <th scope="col">Action</th>
+              </tr>
+             </thead>
+            <tbody>
+              {% for report in reports %}
+              <tr>
+                <td><a href="/report/{{ report.id }}" target="_blank">{{ report.id }}</a></td>
+                <td>{{ report.date }}</td>
+                <td>{{ report.title }}</td>
+                <td>{{ report.icao_ident }}</td>
+                <td>
+                <form action="report/delete/{{ report.id }}" 
+                method="POST" onsubmit="return confirmation(this, 'Confirm delete this report?')">
+                  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                  <input type="submit" value="Delete report">
+                </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>  
   {% endblock %}
 </body>
 </html>

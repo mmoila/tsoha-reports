@@ -10,32 +10,43 @@
 <body>
   {% extends "layout.html" %}
   {% block content %}
-    <div class="col-3">
-      <h1>Users</h1>
+    <div class="row">
+      <div class="col-3">
+        <h2>User management</h2>
+      </div>
     </div>
-    <div class="col-8">
-      <table>
-        <tr>
-          <th>User id</th>
-          <th>Username</th>
-          <th>Admin</th>
-          <th>Active</th>
-        </tr>
-        {% for user in user_list %}
-        <tr>
-          <td>{{ user.id }}</td>
-          <td>{{ user.username }}</td>
-          <td>{{ user.is_admin }}</td>
-          <td>{{ user.is_active }}</td>
-          <td>
-            <form action="/change-state/{{ user.id }}" method="POST">
-            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-            <input type="submit" value="Change user state">
-            </form>
-          </td>
-        </tr>
-        {% endfor %}
-      </table>
+    <div class="row">
+      <div class="col">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">User id</th>
+                <th scope="col">Username</th>
+                <th scope="col">Admin</th>
+                <th scope="col">Active</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in user_list %}
+                <tr>
+                  <td>{{ user.id }}</td>
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.is_admin }}</td>
+                  <td>{{ user.is_active }}</td>
+                  <td>
+                    <form action="/change-state/{{ user.id }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                    <input type="submit" value="Change user state">
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   {% endblock %}
 </body>
