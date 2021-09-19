@@ -53,7 +53,7 @@ def send():
     if len(description) > 1000:
         return render_template("error.html", error="Max description length is 1000 characters")
     location_id = request.form["location"]
-    reports.send(date, title, description, location_id)
+    reports.send(date, title, description, location_id, session["user_id"])
     return redirect("/")
 
 @app.route("/result")
