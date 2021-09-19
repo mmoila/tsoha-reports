@@ -132,6 +132,16 @@ def change_state(id):
         return render_template("error.html", error="Can't deactivate last user/admin...")
     return redirect("/")
 
+@app.route("/change-rights/<int:id>", methods=["POST"])
+def change_rights(id):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    if session["admin"]:
+        if users.change_rights(id):
+            return redirect("/user/search")
+        return render_template("error.html", error="Can't deactivate last admin")
+    return redirect("/")
+
 @app.route("/change-password", methods=["GET", "POST"])
 def change_password():
     if request.method == "GET":

@@ -2,8 +2,6 @@ body {
   font-family: 'Yantramanav', sans-serif;
 }
 
-
-
 .user-status {
     color: darkorange;
     border-style: solid;
@@ -46,4 +44,8 @@ body {
 .main-content {
   max-width: 80em;
   margin-top: 15vh;
+}
+
+.user-actions {
+  display: inline;
 }

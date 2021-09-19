@@ -36,9 +36,13 @@
                   <td>{{ user.is_admin }}</td>
                   <td>{{ user.is_active }}</td>
                   <td>
-                    <form action="/change-state/{{ user.id }}" method="POST">
-                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                    <input type="submit" value="Change user state">
+                    <form class="user-actions" action="/change-state/{{ user.id }}" method="POST">
+                      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                      <input type="submit" value="Change user state">
+                    </form>
+                    <form class="user-actions" action="/change-rights/{{ user.id }}" method="POST">
+                      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                      <input type="submit" value="Change access rights">
                     </form>
                   </td>
                 </tr>

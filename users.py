@@ -61,6 +61,14 @@ def change_state(id):
         return True
     else:
         return False
+
+def change_rights(id):
+    if count_admins() > 1 or not is_admin(id):
+        sql = "UPDATE users SET is_admin = NOT is_admin WHERE id=:id"
+        db.session.execute(sql, {"id":id})
+        db.session.commit()
+        return True
+    return False
     
 def change_password(id, password):
     hash_value = generate_password_hash(password)
