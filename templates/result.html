@@ -27,6 +27,7 @@
                 <th scope="col">Title</th>
                 <th scope="col">Location</th>
                 <th scope="col">Reported by</th>
+                <th scope="col">Sent at time</th>
                 <th scope="col">Action</th>
               </tr>
              </thead>
@@ -38,6 +39,7 @@
                 <td>{{ report.title }}</td>
                 <td>{{ report.icao_ident }}</td>
                 <td>{{ report.username }}</td>
+                <td>{{ report.created_at }}</td>
                 <td>
                 <form action="report/delete/{{ report.id }}" 
                 method="POST" onsubmit="return confirmation(this, 'Confirm delete this report?')">
