@@ -1,5 +1,12 @@
 from db import db
 
+def get_filtered(args):
+    sql = "SELECT A.id, A.date, A.title, A.description, C.username, B.ICAO_ident, A.created_at \
+        FROM reports A LEFT JOIN locations B ON A.location_ID = B.id \
+        LEFT JOIN users C ON A.user_id = C.id WHERE A.title LIKE :title AND B.ICAO_ident = UPPER(:location)"
+    result = db.session.execute(sql, {"title":"%"+args["title"]+"%", "location":args["location"]})
+    return result.fetchall()
+
 def get_all():
     sql = "SELECT A.id, A.date, A.title, A.description, C.username, B.ICAO_ident, A.created_at \
         FROM reports A LEFT JOIN locations B ON A.location_ID = B.id \

@@ -16,6 +16,21 @@
         <h1>Report summary</h1>
       </div>
     </div>
+    <div class="row filter-row">
+      <form action="/result" method="GET">
+        <div class="row">
+          <div class="col-4">
+            <input class="form-control" type="text" name="title" placeholder="Search with title">
+          </div>
+          <div class="col-4">
+            <input class="form-control" type="text" name="location" placeholder="Search with location">
+          </div>
+          <div class="col-4">
+            <input class="btn" type="submit" value="Refresh">
+          </div>
+        </div>
+      </form>
+    </div>
     <div class="row">
       <div class="col">
         <div class="table-responsive">
