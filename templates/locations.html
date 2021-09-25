@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "layout.html" %}
+<head>
+  {% block head %} {{ super() }} {% endblock %}
+</head>
+<body>
+    {% block content %}
+      <div class="row">
+        <div class="col">
+          <h2>Add new aerodrome</h2>
+        </div>
+      </div>
+      <div class="row mb-5">
+        <div class="col">
+          <form action="/aerodromes/add" method="POST">
+            <div class="input-group">
+              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+              <input class="form-control" name="icao" placeholder="ICAO identification">
+              <input class="form-control" name="iata" placeholder="IATA identification">
+              <input class="form-control" name="loc_name" placeholder="Location name">
+              <button class="btn" type="submit">Add aerodrome</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Location name</th>
+                  <th scope="col">ICAO code</th>
+                  <th scope="col">IATA code</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for ad in aerodromes %}
+                <tr>
+                  <td>{{ ad.location_name }}</td>
+                  <td>{{ ad.icao_ident }}</td>
+                  <td>{{ ad.iata_ident }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <form>
+
+        </form>
+      </div>
+      
+    {% endblock %}
+</body>
+</html>

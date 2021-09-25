@@ -1,3 +1,4 @@
+from logging import error
 from werkzeug.utils import redirect
 from app import app
 from flask import render_template, request, session, abort
@@ -5,6 +6,7 @@ from db import db
 import users
 import reports
 import secrets
+import locations
 
 @app.route("/")
 def index():
@@ -36,10 +38,8 @@ def logout():
 
 @app.route("/new")
 def new():
-    result = db.session.execute("SELECT id, \
-        (CONCAT(location_name, ' (', IATA_ident, ')')) AS location FROM locations")
-    locations = result.fetchall()
-    return render_template("new-report.html", locations=locations)
+    ad_list = locations.get_summary_list()
+    return render_template("new-report.html", locations=ad_list)
 
 @app.route("/send", methods=["POST"])
 def send():
@@ -165,4 +165,34 @@ def change_password():
         else:
             return render_template("error.html", error="Passwords didn't match")
 
-        
+@app.route("/aerodromes")
+def aerodromes():
+    if session["admin"]:
+        ad_list = locations.get_all()
+        return render_template("locations.html", aerodromes=ad_list)
+    return render_template("/error.html", error="You must have admin rights to manage aerodromes!")
+
+@app.route("/aerodromes/add", methods=["POST"])
+def add_aerodrome():
+    print("degdgs")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        print("debug")
+        abort(403)
+    if session["admin"]:
+        print("debug2")
+        icao = request.form["icao"]
+        if len(icao) != 4:
+            return render_template("error.html",
+             error="ICAO identification must be four characters long!")
+        iata = request.form["iata"]
+        if len(iata) != 3:
+            return render_template("error.html",
+             error="IATA identification must be three characters long!")
+        loc_name = request.form["loc_name"]
+        if len(loc_name) > 50:
+            return render_template("error.html",
+             error="Max location name length is 50 characters")
+        if locations.add(icao, iata, loc_name):
+            return aerodromes()
+    return render_template("error.html", error="Location already exists!")
+    
