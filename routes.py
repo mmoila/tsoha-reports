@@ -13,6 +13,7 @@ def index():
     title = "test"
     if users.count_admins() == 0:
         session["no_admins"] = True
+        session["csrf_token"] = secrets.token_hex(16)
         return render_template("new-user.html")
     return render_template("index.html", title=title)
 
@@ -92,22 +93,18 @@ def user():
             return redirect("/")
     return redirect("/")
 
-@app.route("/user-init", methods=["GET", "POST"])
+@app.route("/user-init", methods=["POST"])
 def user_init():
-    if request.method == "GET":
-            session["csrf_token"] = secrets.token_hex(16)
-            return render_template("new-user.html")
-    if request.method == "POST":
-        if session["csrf_token"] != request.form["csrf_token"]:
-            abort(403)
-        username = request.form["username"]
-        password = request.form["password"]
-        if len(username) > 30 or len(password) > 30:
-            return render_template("error.html", error="Username or password is too long!")
-        admin = "1"
-        users.create_user(username, password, admin)
-        del session["no_admins"]
-        return redirect("/login")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    username = request.form["username"]
+    password = request.form["password"]
+    if len(username) > 30 or len(password) > 30:
+        return render_template("error.html", error="Username or password is too long!")
+    admin = "1"
+    users.create_user(username, password, admin)
+    del session["no_admins"]
+    return redirect("/")
 
 @app.route("/report/<int:id>")
 def report(id):
