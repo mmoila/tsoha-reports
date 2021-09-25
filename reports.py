@@ -1,9 +1,12 @@
+from flask import session
 from db import db
 
 def get_filtered(args):
     sql = "SELECT A.id, A.date, A.title, A.description, C.username, B.ICAO_ident, A.created_at \
         FROM reports A LEFT JOIN locations B ON A.location_ID = B.id \
-        LEFT JOIN users C ON A.user_id = C.id WHERE A.title LIKE :title AND B.ICAO_ident = UPPER(:location)"
+        LEFT JOIN users C ON A.user_id = C.id WHERE \
+        A.title LIKE (CASE WHEN :title = '' THEN A.title ELSE :title END) \
+        AND B.ICAO_ident = (CASE WHEN :location = '' THEN B.ICAO_ident ELSE UPPER(:location) END)"
     result = db.session.execute(sql, {"title":"%"+args["title"]+"%", "location":args["location"]})
     return result.fetchall()
 
@@ -12,7 +15,11 @@ def get_all():
         FROM reports A LEFT JOIN locations B ON A.location_ID = B.id \
         LEFT JOIN users C ON A.user_id = C.id  \
         LEFT JOIN report_types D ON A.report_type = D.id"
-    result = db.session.execute(sql)
+    if session["admin"]:
+        result = db.session.execute(sql)
+    else:
+        sql += " WHERE A.user_id = :user_id"
+        result = db.session.execute(sql, {"user_id":session["user_id"]})
     return result.fetchall()
 
 def send(date, title, description, id, user_id, report_type):

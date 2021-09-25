@@ -60,18 +60,17 @@ def send():
 
 @app.route("/result")
 def result():
-    if session["admin"]:
-        try:
-            args = request.args
-            if args["location"] == "" and args["title"] == "":
-                result = reports.get_all()
-            else:
-                result = reports.get_filtered(args)
-            return render_template("result.html", reports=result)
-        except:
+    try:
+        args = request.args
+        if args["location"] == "" and args["title"] == "":
             result = reports.get_all()
-            return render_template("result.html", reports=result)
-    return redirect("/")
+        else:
+            result = reports.get_filtered(args)
+        return render_template("result.html", reports=result)
+    except:
+        result = reports.get_all()
+        return render_template("result.html", reports=result)
+    
 
 @app.route("/user", methods=["GET", "POST"])
 def user():
