@@ -39,7 +39,8 @@ def logout():
 @app.route("/new")
 def new():
     ad_list = locations.get_summary_list()
-    return render_template("new-report.html", locations=ad_list)
+    report_types = reports.get_report_types()
+    return render_template("new-report.html", locations=ad_list, report_types=report_types)
 
 @app.route("/send", methods=["POST"])
 def send():
@@ -53,7 +54,8 @@ def send():
     if len(description) > 1000:
         return render_template("error.html", error="Max description length is 1000 characters")
     location_id = request.form["location"]
-    reports.send(date, title, description, location_id, session["user_id"])
+    report_type = request.form["report_type"]
+    reports.send(date, title, description, location_id, session["user_id"], report_type)
     return redirect("/")
 
 @app.route("/result")

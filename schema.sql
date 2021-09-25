@@ -6,7 +6,6 @@ CREATE TABLE users (
 	is_active BOOLEAN
 );
 
-
 CREATE TABLE locations (
 	id SERIAL PRIMARY KEY,
 	ICAO_ident TEXT UNIQUE,
@@ -14,6 +13,10 @@ CREATE TABLE locations (
 	location_name TEXT
 );
 
+CREATE TABLE report_types (
+	id SERIAL PRIMARY KEY,
+	type TEXT UNIQUE
+);
 
 CREATE TABLE reports (
 	id SERIAL PRIMARY KEY,
@@ -22,8 +25,11 @@ CREATE TABLE reports (
 	description TEXT,
 	user_id INTEGER REFERENCES users,
 	location_id INTEGER REFERENCES locations,
+	report_type INTEGER REFERENCES report_types,
 	created_at TIMESTAMP
 );
+
+INSERT INTO report_types (type) VALUES ('Safety'), ('Quality');
 
 INSERT INTO locations (ICAO_ident, IATA_ident, location_name)
 VALUES

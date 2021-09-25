@@ -21,7 +21,13 @@
           <select name="location">
             <option value="" disabled selected>Select location</option>
             {% for location in locations %}
-            <option value="{{location.id}}">{{location.location}}</option>
+            <option value="{{ location.id }}">{{ location.location }}</option>
+            {% endfor %}
+          </select>
+          <select name="report_type">
+            <option value="" disabled selected>Report type</option>
+            {% for type in report_types %}
+            <option value="{{ type.id }}">{{ type.type }}</option>
             {% endfor %}
           </select>
           <br>
