@@ -10,6 +10,7 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Yantramanav&display=swap');
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </head>
 <body>
   {% if session.username %}
@@ -17,12 +18,20 @@
       <nav class="navbar navbar-expand-sm navbar-light navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Reporting app</a>
         <div class="navbar-nav">
-            <a class="nav-link" href="/new">New report</a>
-            {% if session.admin %}
-              <a class="nav-link" href="/result">Search reports</a>
-              <a class="nav-link" href="/user">Create new user</a>
-              <a class="nav-link" href="/user/search">Manage users</a>
-            {% endif %}
+          <a class="nav-link" href="/new">New report</a>
+          <a class="nav-link" href="/result">Search reports</a>
+          {% if session.admin %}
+            <div class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Administration
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" href="/aerodromes">Manage aerodromes</a></li>
+                <li><a class="dropdown-item" href="/user">Create new user</a></li>
+                <li><a class="dropdown-item" href="/user/search">Manage users</a></li>
+              </ul>
+            </div>
+          {% endif %} 
         </div>  
         <div class="navbar-nav ml-md-auto">
           <p class="user-status nav-item my-md-auto">Signed in as {{session.username}}</p>
