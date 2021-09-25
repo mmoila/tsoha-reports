@@ -107,7 +107,7 @@ def user_init():
         admin = "1"
         users.create_user(username, password, admin)
         del session["no_admins"]
-        return redirect("/")
+        return redirect("/login")
 
 @app.route("/report/<int:id>")
 def report(id):
@@ -176,12 +176,9 @@ def aerodromes():
 
 @app.route("/aerodromes/add", methods=["POST"])
 def add_aerodrome():
-    print("degdgs")
     if session["csrf_token"] != request.form["csrf_token"]:
-        print("debug")
         abort(403)
     if session["admin"]:
-        print("debug2")
         icao = request.form["icao"]
         if len(icao) != 4:
             return render_template("error.html",
