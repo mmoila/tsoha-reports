@@ -95,6 +95,7 @@ def user():
 @app.route("/user-init", methods=["GET", "POST"])
 def user_init():
     if request.method == "GET":
+            session["csrf_token"] = secrets.token_hex(16)
             return render_template("new-user.html")
     if request.method == "POST":
         if session["csrf_token"] != request.form["csrf_token"]:
