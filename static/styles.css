@@ -49,3 +49,11 @@ body {
 .filter-row {
   margin: 10px 5px 10px 0px;
 }
+
+.dropdown-menu {
+  border-style: none;
+}
+
+.dropdown-item:active {
+  background-color: darkorange;
+}
