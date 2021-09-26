@@ -16,8 +16,8 @@
 </head>
 <body>
   {% if session.username %}
-    <div class="container-fluid">
-      <nav class="navbar navbar-expand-sm navbar-light navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-light navbar-dark bg-dark">
+      <div class="container-fluid">
         <a class="navbar-brand" href="/">Reporting app</a>
         <div class="navbar-nav">
           <a class="nav-link" href="/new">New report</a>
@@ -35,22 +35,22 @@
             </div>
           {% endif %} 
         </div>  
-        <div class="navbar-nav ml-md-auto">
+        <div class="navbar-nav ml-auto">
           <p class="user-status nav-item my-md-auto">Signed in as {{session.username}}</p>
           <a class="nav-link" href="/change-password">Change password</a>
           <a class="nav-link" href="/logout">Sign out</a>
         </div>
-      </nav>
-    </div>
-      <div class="main-content container">
-        {% block content %} {% endblock %}
-      </div> 
+      </div>
+    </nav>
+    <div class="main-content container">
+      {% block content %} {% endblock %}
+    </div> 
   {% else %}
-    <div class="container-fluid">
-      <nav class="navbar navbar-expand-sm navbar-light navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm navbar-light navbar-dark bg-dark">
+      <div class="container-fluid">
         <a class="navbar-brand" href="/">Reporting app</a>
-      </nav>
-    </div>
+      </div>
+    </nav>
     <div id="login" class="container">
       <div class="row justify-content-center align-items-center">
         <div class="col-6">

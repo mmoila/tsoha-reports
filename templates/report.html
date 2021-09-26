@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+{% extends "layout.html" %}
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  {% block head %} {{ super() }} {% endblock %}
 </head>
 <body>
-    {% extends "layout.html" %}
-    {% block content %}
-    <p>Report title: {{ report.title }}</p>
-    <p>Report type: {{ report.type }}</p>
-    <p>Date: {{ report.date }}</p>
-    <p>Description: {{ report.description }}</p>
-    <p>Location: {{ report.location_name}}</p>
-    {% endblock %}
+  {% block content %}
+  <p>Report title: {{ report.title }}</p>
+  <p>Report type: {{ report.type }}</p>
+  <p>Date: {{ report.date }}</p>
+  <p>Description: {{ report.description }}</p>
+  <p>Location: {{ report.location_name}}</p>
+  {% endblock %}
 </body>
 </html>
