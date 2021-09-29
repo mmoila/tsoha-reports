@@ -39,7 +39,7 @@ body {
 
 .main-content {
   max-width: 80em;
-  margin-top: 15vh;
+  margin-top: 10vh;
 }
 
 .user-actions {
@@ -56,4 +56,13 @@ body {
 
 .dropdown-item:active {
   background-color: darkorange;
+}
+
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+  outline: none;
+  box-shadow:none !important;
+  border:1px solid #ccc !important;
 }

@@ -6,31 +6,43 @@
 </head>
 <body>
   {% block content %}
-    <div class="row justify-content-center">
-      <div class="col-3">
+    <div class="row">
+      <div class="col-md-4 mb-4">
         <h1 class="bd-title">New report</h1>
       </div>
+    </div>
+    <div class="row justify-content-center">
       <div class="col-8">
         <form action="/send" method="post">
-          <input type="date" name="date"><br>
-          <input type="text" name="title" placeholder="Report title here"><br>
+          <div class="form-group">
+            <input type="date" class="form-control col-md-4" name="date">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="title" placeholder="Report title here">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <select name="location" class="form-control">
+                <option value="" disabled selected>Select location</option>
+                {% for location in locations %}
+                <option value="{{ location.id }}">{{ location.location }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <select name="report_type" class="form-control">
+                <option value="" disabled selected>Report type</option>
+                {% for type in report_types %}
+                <option value="{{ type.id }}">{{ type.type }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
           <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-          <select name="location">
-            <option value="" disabled selected>Select location</option>
-            {% for location in locations %}
-            <option value="{{ location.id }}">{{ location.location }}</option>
-            {% endfor %}
-          </select>
-          <select name="report_type">
-            <option value="" disabled selected>Report type</option>
-            {% for type in report_types %}
-            <option value="{{ type.id }}">{{ type.type }}</option>
-            {% endfor %}
-          </select>
-          <br>
-          <textarea name="description" rows="10" cols="40" placeholder="Description"></textarea>
-          <br>
-          <input type="submit" value="Send">
+          <div class="form-group">
+            <textarea name="description" class="form-control" rows="10" cols="60" placeholder="Description"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send</button>
         </form>
       </div>
     </div>
