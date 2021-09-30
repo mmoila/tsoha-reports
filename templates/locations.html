@@ -16,9 +16,9 @@
           <form action="/aerodromes/add" method="POST">
             <div class="input-group">
               <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-              <input class="form-control" name="icao" placeholder="ICAO identification">
-              <input class="form-control" name="iata" placeholder="IATA identification">
-              <input class="form-control" name="loc_name" placeholder="Location name">
+              <input type="text" class="form-control" name="icao" placeholder="ICAO identification">
+              <input type="text" class="form-control" name="iata" placeholder="IATA identification">
+              <input type="text" class="form-control" name="loc_name" placeholder="Location name">
               <button class="btn" type="submit">Add aerodrome</button>
             </div>
           </form>
