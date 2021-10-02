@@ -29,6 +29,13 @@ CREATE TABLE reports (
 	created_at TIMESTAMP
 );
 
+CREATE TABLE message_board (
+	id SERIAL PRIMARY KEY,
+	message TEXT,
+	user_id INTEGER REFERENCES users,
+	created_at TIMESTAMP
+);
+
 INSERT INTO report_types (type) VALUES ('Safety'), ('Quality');
 
 INSERT INTO locations (ICAO_ident, IATA_ident, location_name)

@@ -7,6 +7,7 @@ import users
 import reports
 import secrets
 import locations
+import messages
 
 @app.route("/")
 def index():
@@ -15,7 +16,8 @@ def index():
         session["no_admins"] = True
         session["csrf_token"] = secrets.token_hex(16)
         return render_template("new-user.html")
-    return render_template("index.html", title=title)
+    notes = messages.get_all()
+    return render_template("index.html", title=title, notes=notes)
 
 @app.route("/login",methods=["POST"])
 def login():

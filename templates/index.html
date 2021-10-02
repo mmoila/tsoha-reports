@@ -6,7 +6,26 @@
 </head>
 <body>
   {% block content %}
-    <h2>Welcome!</h2>
+    <div class="row mb-5">
+      <h2>Welcome!</h2>
+    </div>
+      {% for content in notes %}
+      <div class="message container-fluid bg-light border border-dark rounded p-4 mb-5">
+        <div class="row justify-content-start pb-5">
+          <div class="col-md-6">
+            <p>{{ content.message }}</p>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-lg-1">
+            <p><small>{{ content.username }}</small></p>
+          </div>
+          <div class="col-lg-2">
+            <p><small>{{ content.created_at }}</small></p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
   {% endblock %}
 </body>
 </html>

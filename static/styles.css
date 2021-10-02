@@ -1,5 +1,6 @@
 body {
   font-family: 'Yantramanav', sans-serif;
+  height: 100vh;
 }
 
 .user-status {
@@ -38,8 +39,9 @@ body {
 }
 
 .main-content {
-  max-width: 80em;
-  margin-top: 10vh;
+  max-width: 70em;
+  padding: 10vh 5vh 0 5vh;
+  height: 100%;
 }
 
 .user-actions {
@@ -64,3 +66,6 @@ body {
   border:1px solid #ccc;
 }
 
+.message {
+  font-size: 1.2rem;
+}
