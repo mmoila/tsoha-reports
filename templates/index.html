@@ -9,10 +9,13 @@
     <div class="row mb-5">
       <h2>Welcome!</h2>
     </div>
+    <div class="row mb-2">
+      <p class="lead">Check out the latest news on reporting portal:</p>
+    </div>
       {% for content in notes %}
       <div class="message container-fluid bg-light border border-dark rounded p-4 mb-5">
         <div class="row justify-content-start pb-5">
-          <div class="col-md-6">
+          <div class="col-lg-8 col-sm-12 col-12">
             <p>{{ content.message }}</p>
           </div>
         </div>
