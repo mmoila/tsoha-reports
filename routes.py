@@ -193,4 +193,12 @@ def add_aerodrome():
         if locations.add(icao, iata, loc_name):
             return aerodromes()
     return render_template("error.html", error="Location already exists!")
+
+@app.route("/delete-message", methods=["POST"])
+def delete_message():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    message_id = request.form["message_id"]
+    messages.delete(message_id)
+    return redirect("/")
     
