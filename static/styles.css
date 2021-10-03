@@ -1,6 +1,5 @@
 body {
-  font-family: 'Yantramanav', sans-serif;
-  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .user-status {
@@ -42,6 +41,10 @@ body {
   max-width: 70em;
   padding: 10vh 5vh 0 5vh;
   height: 100%;
+}
+
+#main-footer {
+  height: 5vh;
 }
 
 .user-actions {
