@@ -18,8 +18,10 @@
           <div class="col-lg-8 col-sm-10 col-10">
             <p>{{ content.message }}</p>
           </div>
+          {% if session.admin %}
           <div class="col-1 d-flex justify-content-center">
-            <form action="/delete-message" method="post">
+            <form action="/delete-message" method="post" 
+            onsubmit="return confirmation(this, 'Confirm delete this message?')">
               <div class="form-group">
                 <input type="hidden" name="message_id" value="{{ content.id }}">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
@@ -27,6 +29,7 @@
               </div>
             </form>
           </div>
+          {% endif %}
         </div>
         <div class="row justify-content-end">
           <div class="col-lg-1">
