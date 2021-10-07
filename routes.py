@@ -1,4 +1,5 @@
 from logging import error
+from operator import methodcaller
 from werkzeug.utils import redirect
 from app import app
 from flask import render_template, request, session, abort
@@ -202,3 +203,10 @@ def delete_message():
     messages.delete(message_id)
     return redirect("/")
     
+@app.route("/create-message", methods=["POST"])
+def create_message():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    message_content = request.form["message-content"]
+    messages.create(message_content, session["user_id"])
+    return redirect("/")

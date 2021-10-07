@@ -11,3 +11,9 @@ def delete(id):
     db.session.execute(sql, {"id":id})
     db.session.commit()
     
+def create(message_content, id):
+    sql = "INSERT INTO message_board \
+        (message, user_id, created_at) VALUES \
+        (:message_content, :id, date_trunc('minute', CURRENT_TIMESTAMP))"
+    db.session.execute(sql, {"message_content":message_content, "id":id})
+    db.session.commit()
