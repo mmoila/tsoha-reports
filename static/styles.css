@@ -10,14 +10,25 @@ body {
     padding: 2px 4px;
 }
 
-#login {
-  margin-top: 15vh;
-  border-style: solid;
+.login-container {
+  background-color: lightgrey;
   border-width: 1px;
-  border-color: grey;
-  background-color: rgb(214, 214, 214);
-  padding: 40px 0;
-  max-width: 600px;
+  border-radius: 1em;
+  height: 400px;
+	width: 350px;
+  margin-top: 10vh;
+  border-style: solid;
+  border-color: darkgrey;
+  padding: 2em;
+  box-shadow: 0 0 4px 0 darkgrey;
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  box-shadow: none;
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: black !important;
 }
 
 #login-text {
