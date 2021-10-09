@@ -66,10 +66,7 @@ def send():
 def result():
     try:
         args = request.args
-        if args["location"] == "" and args["title"] == "":
-            result = reports.get_all()
-        else:
-            result = reports.get_filtered(args)
+        result = reports.get_filtered(args)
         return render_template("result.html", reports=result)
     except:
         result = reports.get_all()
