@@ -56,7 +56,7 @@
                 <form action="report/delete/{{ report.id }}" 
                 method="POST" onsubmit="return confirmation(this, 'Confirm delete this report?')">
                   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                  <input type="submit" value="Delete report">
+                  <button type="submit" class="btn"><i class="bi bi-trash" aria-label="Delete report"></i></button>
                 </form>
                 </td>
               </tr>
