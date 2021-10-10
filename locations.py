@@ -2,7 +2,7 @@ from db import db
 
 def get_summary_list():
     result = db.session.execute("SELECT id, \
-        (CONCAT(location_name, '(', IATA_ident, ')')) AS location FROM locations")
+        (CONCAT(location_name, ' (', IATA_ident, ')')) AS location FROM locations")
     return result.fetchall()
 
 def get_all():
