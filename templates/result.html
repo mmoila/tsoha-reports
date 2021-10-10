@@ -21,7 +21,7 @@
             <input class="form-control" type="text" name="location" placeholder="Search with location">
           </div>
           <div class="col-3">
-            <input class="btn" type="submit" value="Refresh">
+            <button class="btn" type="submit" value="Refresh"><i class="bi bi-arrow-repeat"></i></button>
           </div>
         </div>
       </form>
@@ -32,6 +32,7 @@
           <table class="table table-striped">
             <thead>
               <tr>
+                <th></th>
                 <th scope="col">Report id</th>
                 <th scope="col">Date</th>
                 <th scope="col">Type</th>
@@ -45,7 +46,8 @@
             <tbody>
               {% for report in reports %}
               <tr>
-                <td><a href="/report/{{ report.id }}" target="_blank">{{ report.id }}</a></td>
+                <td><a href="/report/{{ report.id }}" title="Open report" target="_blank"><i class="bi bi-plus-square"></i></a></td>
+                <td>{{ report.id }}</td>
                 <td>{{ report.date }}</td>
                 <td>{{ report.type }}</td>
                 <td>{{ report.title }}</td>
