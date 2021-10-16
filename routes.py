@@ -9,6 +9,7 @@ import reports
 import secrets
 import locations
 import messages
+import validations
 
 @app.route("/")
 def index():
@@ -30,10 +31,8 @@ def login():
         session["admin"] = False
         if users.is_admin(session["user_id"]):
             session["admin"] = True
-        return redirect("/")
-    else:
-        return redirect("/")
-
+    return redirect("/")
+    
 @app.route("/logout")
 def logout():
     for key in list(session.keys()):
@@ -48,18 +47,18 @@ def new():
 
 @app.route("/send", methods=["POST"])
 def send():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
-    date = request.form["date"]
-    title = request.form["title"]
-    if len(title) > 50:
-        return render_template("error.html", error = "Title is too long!")
-    description = request.form["description"]
-    if len(description) > 1000:
-        return render_template("error.html", error="Max description length is 1000 characters")
-    location_id = request.form["location"]
-    report_type = request.form["report_type"]
-    reports.send(date, title, description, location_id, session["user_id"], report_type)
+    validations.check_csrf(session["csrf_token"])
+    fields = request.form
+    validation = validations.is_valid(fields)
+    if validation == True:
+        date = fields["date"]
+        title = fields["title"]
+        description = fields["description"]
+        location_id = fields["location"]
+        report_type = fields["report_type"]
+        reports.send(date, title, description, location_id, session["user_id"], report_type)
+    else:
+        return render_template("/error.html", error=validation)
     return redirect("/")
 
 @app.route("/result")
@@ -72,37 +71,34 @@ def result():
         result = reports.get_all()
         return render_template("result.html", reports=result)
     
-
 @app.route("/user", methods=["GET", "POST"])
 def user():
     if session["admin"]:
         if request.method == "GET":
             return render_template("new-user.html")
         if request.method == "POST":
-            if session["csrf_token"] != request.form["csrf_token"]:
-                return abort(403)
-            username = request.form["username"]
-            password = request.form["password"]
-            if len(username) > 30 or len(password) > 30:
-                return render_template("error.html", error="Username or password is too long!")
+            validations.check_csrf(session["csrf_token"])
+            fields = request.form
+            validation_result = validations.is_valid(fields)
+            if validation_result != True:
+                return render_template("error.html", error=validation_result)
             try:
                 admin = request.form["admin"]
-                users.create_user(username, password, admin)
+                users.create_user(fields["username"], fields["password"], admin)
             except:
-                users.create_user(username, password)
+                users.create_user(fields["username"], fields["password"])
             return redirect("/")
     return redirect("/")
 
 @app.route("/user-init", methods=["POST"])
 def user_init():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
-    username = request.form["username"]
-    password = request.form["password"]
-    if len(username) > 30 or len(password) > 30:
-        return render_template("error.html", error="Username or password is too long!")
+    validations.check_csrf(session["csrf_token"])
+    fields = request.form
+    validation_result = validations.is_valid(fields)
+    if validation_result != True:
+        return render_template("error.html", error=validation_result)
     admin = "1"
-    users.create_user(username, password, admin)
+    users.create_user(fields["username"], fields["password"], admin)
     del session["no_admins"]
     return redirect("/")
 
@@ -115,8 +111,7 @@ def report(id):
 
 @app.route("/report/delete/<int:id>", methods=["POST"])
 def delete(id):
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
+    validations.check_csrf(session["csrf_token"])
     if session["admin"]:
         reports.delete(id)
         return redirect("/result")
@@ -131,8 +126,7 @@ def user_search():
 
 @app.route("/change-state/<int:id>", methods=["POST"])
 def change_state(id):
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
+    validations.check_csrf(session["csrf_token"])
     if session["admin"]:
         if users.change_state(id):
             return redirect("/user/search")
@@ -141,8 +135,7 @@ def change_state(id):
 
 @app.route("/change-rights/<int:id>", methods=["POST"])
 def change_rights(id):
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
+    validations.check_csrf(session["csrf_token"])
     if session["admin"]:
         if users.change_rights(id):
             return redirect("/user/search")
@@ -154,10 +147,13 @@ def change_password():
     if request.method == "GET":
         return render_template("change-password.html")
     if request.method == "POST":
-        if session["csrf_token"] != request.form["csrf_token"]:
-            abort(403)
-        password = request.form["password"]
-        c_password = request.form["cPassword"]
+        validations.check_csrf(session["csrf_token"])
+        fields = request.form
+        validation_result = validations.is_valid(fields)
+        if validation_result != True:
+            return render_template("error.html", error=validation_result)
+        password = fields["password"]
+        c_password = fields["cPassword"]
         if password == c_password:
             users.change_password(session["user_id"], password)
             return redirect("/")
@@ -173,37 +169,30 @@ def aerodromes():
 
 @app.route("/aerodromes/add", methods=["POST"])
 def add_aerodrome():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
+    validations.check_csrf(session["csrf_token"])
     if session["admin"]:
-        icao = request.form["icao"]
-        if len(icao) != 4:
-            return render_template("error.html",
-             error="ICAO identification must be four characters long!")
-        iata = request.form["iata"]
-        if len(iata) != 3:
-            return render_template("error.html",
-             error="IATA identification must be three characters long!")
-        loc_name = request.form["loc_name"]
-        if len(loc_name) > 50:
-            return render_template("error.html",
-             error="Max location name length is 50 characters")
-        if locations.add(icao, iata, loc_name):
+        fields = request.form
+        validation_result = validations.is_valid(fields)
+        if validation_result != True:
+            return render_template("error.html", error=validation_result)
+        if locations.add(fields["icao"], fields["iata"], fields["loc_name"]):
             return aerodromes()
     return render_template("error.html", error="Location already exists!")
 
 @app.route("/delete-message", methods=["POST"])
 def delete_message():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
+    validations.check_csrf(session["csrf_token"])
     message_id = request.form["message_id"]
     messages.delete(message_id)
     return redirect("/")
     
 @app.route("/create-message", methods=["POST"])
 def create_message():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
-    message_content = request.form["message-content"]
-    messages.create(message_content, session["user_id"])
+    validations.check_csrf(session["csrf_token"])
+    fields = request.form
+    validation_result = validations.is_valid(fields)
+    if validation_result == True:
+        messages.create(fields["message-content"], session["user_id"])
+    else:
+        return render_template("error.html", error="Cannot create blank message!")
     return redirect("/")
