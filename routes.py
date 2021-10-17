@@ -181,6 +181,7 @@ def add_aerodrome():
         validation_result = validations.is_valid(fields)
         if validation_result != True:
             flash(validation_result, "warning")
+            return redirect("/aerodromes")
         if locations.add(fields["icao"], fields["iata"], fields["loc_name"]):
             return aerodromes()
     flash("Location already exists.", "warning")
