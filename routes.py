@@ -1,8 +1,6 @@
-from logging import error
-from operator import methodcaller
 from werkzeug.utils import redirect
 from app import app
-from flask import render_template, request, session, abort
+from flask import render_template, request, session, flash
 from db import db
 import users
 import reports
@@ -13,13 +11,12 @@ import validations
 
 @app.route("/")
 def index():
-    title = "test"
     if users.count_admins() == 0:
         session["no_admins"] = True
         session["csrf_token"] = secrets.token_hex(16)
-        return render_template("new-user.html")
+        return render_template("index.html")
     notes = messages.get_all()
-    return render_template("index.html", title=title, notes=notes)
+    return render_template("index.html", notes=notes)
 
 @app.route("/login",methods=["POST"])
 def login():
@@ -49,8 +46,8 @@ def new():
 def send():
     validations.check_csrf(session["csrf_token"])
     fields = request.form
-    validation = validations.is_valid(fields)
-    if validation == True:
+    validation_result = validations.is_valid(fields)
+    if validation_result == True:
         date = fields["date"]
         title = fields["title"]
         description = fields["description"]
@@ -58,8 +55,11 @@ def send():
         report_type = fields["report_type"]
         reports.send(date, title, description, location_id, session["user_id"], report_type)
     else:
-        return render_template("/error.html", error=validation)
+        flash(validation_result, "warning")
+        return redirect("/new")
+    flash("Report sent successfully", "info")
     return redirect("/")
+    
 
 @app.route("/result")
 def result():
@@ -81,22 +81,26 @@ def user():
             fields = request.form
             validation_result = validations.is_valid(fields)
             if validation_result != True:
-                return render_template("error.html", error=validation_result)
+                flash(validation_result, "warning")
+                return redirect("/user")
             try:
                 admin = request.form["admin"]
                 users.create_user(fields["username"], fields["password"], admin)
             except:
                 users.create_user(fields["username"], fields["password"])
+            flash("New user created.", "info")
             return redirect("/")
     return redirect("/")
 
-@app.route("/user-init", methods=["POST"])
+@app.route("/user-init", methods=["GET", "POST"])
 def user_init():
+    if request.method == "GET":
+        return render_template("user-init.html")
     validations.check_csrf(session["csrf_token"])
     fields = request.form
     validation_result = validations.is_valid(fields)
     if validation_result != True:
-        return render_template("error.html", error=validation_result)
+        flash(validation_result, "warning")
     admin = "1"
     users.create_user(fields["username"], fields["password"], admin)
     del session["no_admins"]
@@ -130,7 +134,7 @@ def change_state(id):
     if session["admin"]:
         if users.change_state(id):
             return redirect("/user/search")
-        return render_template("error.html", error="Can't deactivate last user/admin...")
+        flash("Can't deactivate last user/admin.", "warning")
     return redirect("/")
 
 @app.route("/change-rights/<int:id>", methods=["POST"])
@@ -139,7 +143,7 @@ def change_rights(id):
     if session["admin"]:
         if users.change_rights(id):
             return redirect("/user/search")
-        return render_template("error.html", error="Can't deactivate last admin")
+        flash("Can't deactivate last admin.", "warning")
     return redirect("/")
 
 @app.route("/change-password", methods=["GET", "POST"])
@@ -151,14 +155,16 @@ def change_password():
         fields = request.form
         validation_result = validations.is_valid(fields)
         if validation_result != True:
-            return render_template("error.html", error=validation_result)
+            flash(validation_result, "warning")
         password = fields["password"]
         c_password = fields["cPassword"]
         if password == c_password:
             users.change_password(session["user_id"], password)
+            flash("Password changed successfully!", "info")
             return redirect("/")
         else:
-            return render_template("error.html", error="Passwords didn't match")
+            flash("Passwords didn't match.", "warning")
+            return redirect("/change-password")
 
 @app.route("/aerodromes")
 def aerodromes():
@@ -174,10 +180,11 @@ def add_aerodrome():
         fields = request.form
         validation_result = validations.is_valid(fields)
         if validation_result != True:
-            return render_template("error.html", error=validation_result)
+            flash(validation_result, "warning")
         if locations.add(fields["icao"], fields["iata"], fields["loc_name"]):
             return aerodromes()
-    return render_template("error.html", error="Location already exists!")
+    flash("Location already exists.", "warning")
+    return redirect("/aerodromes")
 
 @app.route("/delete-message", methods=["POST"])
 def delete_message():
@@ -194,5 +201,5 @@ def create_message():
     if validation_result == True:
         messages.create(fields["message-content"], session["user_id"])
     else:
-        return render_template("error.html", error="Cannot create blank message!")
+        flash("Cannot create blank message", "warning")
     return redirect("/")

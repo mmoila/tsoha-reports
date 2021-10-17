@@ -1,0 +1,14 @@
+{% if session.no_admins %}
+<div class="col-3">
+  <h1>First create admin user</h1>
+</div>
+<div class="col-8">
+  <form action="/user-init" method="POST">
+    <input type="text" name="username" placeholder="Select username"><br>
+    <input type="password" name="password" placeholder="Select password"><br>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <br>
+    <input type="submit" value="Create user">
+  </form>
+</div>
+{% endif %}
