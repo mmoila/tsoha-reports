@@ -13,6 +13,5 @@ Sovelluksen ominaisuuksia:
   - Käyttäjä voi tarkastella lähettämiänsä raportteja
   - Käyttäjä voi vaihtaa halutessaan salasanansa
   
-Sovellus on testattavissa osoitteessa tsoha-reports.herokuapp.com
-Testausta varten ylläpitäjän käyttäjätunnus on admin1 ja salasana admin2.
+
   
